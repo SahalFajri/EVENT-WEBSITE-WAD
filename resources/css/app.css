@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sidebar {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  @media (min-width: 640px) {
+    #default-sidebar {
+      transform: translateX(0); /* Sidebar selalu terlihat pada layar lebih besar */
+    }
+  }
+  
+  a.active {
+    background-color: #e2e8f0; /* Warna latar belakang */
+    color: #1a202c; /* Warna teks */
+    font-weight: bold; /* Tambahan gaya untuk penekanan */
+  }
+  a.active svg {
+    color: #2c7aff; /* Warna ikon untuk halaman aktif */
+  }
+  
