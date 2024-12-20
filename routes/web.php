@@ -15,3 +15,15 @@ Route::get('admin', function () {
 Route::get('merchandise', function () {
     return view('admin.merchandise.index');
 });
+Route::get('/article', function () {
+    return view('user.article.index');
+})->name('user.article.index');
+
+Route::get('article/show', function () {
+    return view('user.article.show');
+})->name('user.article.show');
+
+// lihat tampila doang
+Route::get('article', function () {
+    return view('admin.article.index');
+});
