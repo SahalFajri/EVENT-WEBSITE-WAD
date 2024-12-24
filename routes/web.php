@@ -24,6 +24,6 @@ Route::get('article/show', function () {
 })->name('user.article.show');
 
 // lihat tampila doang
-Route::get('article', function () {
+Route::get('admin/article', function () {
     return view('admin.article.index');
 });
