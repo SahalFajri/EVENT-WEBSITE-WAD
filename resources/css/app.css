@@ -20,4 +20,18 @@
   a.active svg {
     color: #2c7aff; /* Warna ikon untuk halaman aktif */
   }
-  
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 1s ease-out;
+}
