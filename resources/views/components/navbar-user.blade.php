@@ -1,8 +1,8 @@
-<nav class="bg-gradient-to-r from-primary-500 to-accent-600 border-gray-200 fixed w-full z-20 top-0 start-0 shadow-md">
+<nav class="bg-main border-gray-200 fixed w-full z-50 top-0 start-0 shadow-md">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-6">
     <a href="{{ route('home') }}" class="flex items-center space-x-3">
       {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> --}}
-      <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Event Gas</span>
+      <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">MelodyMania</span>
     </a>
     <div class="flex items-center md:order-2 space-x-3 md:space-x-3">
       @auth
@@ -44,7 +44,7 @@
           up</a>
       @endauth
       <button data-collapse-toggle="navbar-user" type="button"
-        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden hover:text-accent-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
         aria-controls="navbar-user" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -60,13 +60,13 @@
           <x-navigation-user href="{{ route('home') }}" :active="Request::is('home')">Home</x-navigation-user>
         </li>
         <li>
-          <x-navigation-user href="#" :active="Request::is('ticket')">Ticket</x-navigation-user>
+          <x-navigation-user href="{{ route('user.ticket.index') }}" :active="Request::is('ticket*')">Ticket</x-navigation-user>
         </li>
         <li>
           <x-navigation-user href="#'" :active="Request::is('merchandise')">Merchandise</x-navigation-user>
         </li>
         <li>
-          <x-navigation-user href="#" :active="Request::is('article')">Article</x-navigation-user>
+          <x-navigation-user href="{{ route('user.article.index') }}" :active="Request::is('article')">Article</x-navigation-user>
         </li>
         <li>
           <x-navigation-user href="#" :active="Request::is('gallery')">Gallery</x-navigation-user>
