@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,7 +22,7 @@ Route::get('merchandise', function () {
 });
 
 Route::get('/article', function () {
-    return view('user.article.index');
+    return view('user.article.index', ['title' => 'Article']);
 })->name('user.article.index');
 
 Route::get('article/show', function () {
@@ -32,3 +33,7 @@ Route::get('article/show', function () {
 Route::get('admin/article', function () {
     return view('admin.article.index');
 });
+
+// Ticket Users
+Route::get('ticket', [TicketController::class, 'index'])->name('user.ticket.index');
+Route::get('ticket/show', [TicketController::class, 'show'])->name('user.ticket.show');
