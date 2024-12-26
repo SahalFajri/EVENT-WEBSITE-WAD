@@ -1,24 +1,53 @@
 <?php
 
-use App\Http\Controllers\SuperAdminController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
 
 
 
 Route::get('/', function () {
-    return view('app');
-});
+    return redirect()->route('home');
+})->name('home');
 
-Route::get('admin', function () {
-    return view('admin.admin.index');
-});
+Route::get('/home', function () {
+    return view('home', ['title' => 'Home']);
+})->name('home');
 
-Route::get('merchandise', function () {
+// Admin
+Route::get('/admin', function () {
+    return view('admin.dashboard');
+})->name('dashboard');
+
+// Merchandise Admin
+Route::get('/admin/merchandise', function () {
     return view('admin.merchandise.index');
-});
+})->name('admin.merchandise.index');
 
-Route::resource('user', UserController::class);
+// Article Admin
+Route::get('/admin/article', function () {
+    return view('admin.article.index');
+})->name('admin.article.index');
 
-Route::resource('superAdmin', SuperAdminController::class);
+// Gallery Admin
+Route::get('/admin/gallery', [GalleryController::class, 'index'])->name('admin.gallery.index');
+
+// Article Users
+Route::get('/article', function () {
+    return view('user.article.index', ['title' => 'Article']);
+})->name('user.article.index');
+
+Route::get('/article/show', function () {
+    return view('user.article.show');
+})->name('user.article.show');
+
+// Ticket Users
+Route::get('/ticket', [TicketController::class, 'index'])->name('user.ticket.index');
+Route::get('/ticket/show', [TicketController::class, 'show'])->name('user.ticket.show');
+
+// Gallery Users
+Route::get('/gallery', function () {
+    return view('user.gallery.index', ['title' => 'Gallery']);
+})->name('user.gallery.index');
+

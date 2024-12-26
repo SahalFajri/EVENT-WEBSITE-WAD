@@ -3,21 +3,41 @@
 @tailwind utilities;
 
 .sidebar {
-    transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+}
+
+@media (min-width: 640px) {
+  #default-sidebar {
+    transform: translateX(0); /* Sidebar selalu terlihat pada layar lebih besar */
   }
-  
-  @media (min-width: 640px) {
-    #default-sidebar {
-      transform: translateX(0); /* Sidebar selalu terlihat pada layar lebih besar */
-    }
+}
+
+a.active {
+  background-color: #e2e8f0; /* Warna latar belakang */
+  color: #1a202c; /* Warna teks */
+  font-weight: bold; /* Tambahan gaya untuk penekanan */
+}
+a.active svg {
+  color: #2c7aff; /* Warna ikon untuk halaman aktif */
+}
+
+@layer components {
+  .bg-main {
+    @apply bg-gradient-to-r from-primary-500 to-accent-600;
   }
-  
-  a.active {
-    background-color: #e2e8f0; /* Warna latar belakang */
-    color: #1a202c; /* Warna teks */
-    font-weight: bold; /* Tambahan gaya untuk penekanan */
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
   }
-  a.active svg {
-    color: #2c7aff; /* Warna ikon untuk halaman aktif */
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
+}
+
+.animate-slide-up {
+  animation: slide-up 1s ease-out;
+}
