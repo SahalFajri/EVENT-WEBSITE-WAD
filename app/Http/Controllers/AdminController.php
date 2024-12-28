@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
+
 use App\Models\User;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-
-class UserController extends Controller
+class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //
+
     public function index()
     {
         //
@@ -63,9 +63,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(string $id)
     {
-        return view('admin.user.update', ['user' => $user]);
+        //
+        $data = User::find($id);
+        return view('admin.user.update', );
+
     }
 
     /**
@@ -81,20 +84,18 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id, User $user)
     {
-
         //
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
             'phone' => 'nullable|string|max:50',
             'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'role' => 'required|in:superadmin,admin,user',
         ]);
-        $validated['role'] = 'admin';
-        // dd($validated);
+
         if ($request->hasFile('profile_picture')) {
             if ($user->profile_picture) {
                 Storage::disk('public')->delete($user->profile_picture);
@@ -110,7 +111,7 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect('/admin/user');
+        return response()->json($user);
     }
 
     /**
