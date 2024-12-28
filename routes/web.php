@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\TicketController;
-use App\Http\Controllers\Admin\MerchandiseController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,10 +21,15 @@ Route::get('/admin', function () {
     return view('admin.dashboard');
 })->name('dashboard');
 
+// Admin
+Route::resource('/admin/user', controller: UserController::class);
+
+
 // Merchandise Admin
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('merchandise', MerchandiseController::class);
-});
+Route::get('/admin/merchandise', function () {
+    return view('admin.merchandise.index');
+})->name('admin.merchandise.index');
+
 // Article Admin
 Route::get('/admin/article', function () {
     return view('admin.article.index');
@@ -52,3 +56,4 @@ Route::get('/gallery', function () {
     return view('user.gallery.index', ['title' => 'Gallery']);
 })->name('user.gallery.index');
 
+// user
