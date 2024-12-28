@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\Admin\MerchandiseController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -21,10 +23,9 @@ Route::get('/admin', function () {
 })->name('dashboard');
 
 // Merchandise Admin
-Route::get('/admin/merchandise', function () {
-    return view('admin.merchandise.index');
-})->name('admin.merchandise.index');
-
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('merchandise', MerchandiseController::class);
+});
 // Article Admin
 Route::get('/admin/article', function () {
     return view('admin.article.index');
