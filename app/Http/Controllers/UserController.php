@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
@@ -14,6 +15,33 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function login(Request $request)
+    {
+        // dd($request);
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect('/admin');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
+
     public function index()
     {
         //
@@ -87,7 +115,7 @@ class UserController extends Controller
         //
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required',
             'phone' => 'nullable|string|max:50',
@@ -116,7 +144,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, User $user)
+    public function destroy(User $user)
     {
         //
         if ($user->profile_picture) {
@@ -125,6 +153,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return response()->json(['message' => 'User deleted successfully.']);
+        return redirect('/admin/user');
     }
 }

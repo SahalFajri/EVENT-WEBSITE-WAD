@@ -37,7 +37,7 @@
           </ul>
         </div>
       @else
-        <a href="{{ route('') }}"
+        <a href="{{ route('user.login') }}"
           class="text-sm text-white bg-primary-800 border-2 border-primary-800 rounded px-4 py-2 focus:ring-4 focus:ring-primary-300 hover:bg-accent-400 hover:border-accent-400">Login</a>
         <a href="#"
           class="text-sm text-primary-800 bg-transparent border-2 border-primary-800 rounded px-4 py-2 focus:ring-4 focus:ring-primary-300 hover:bg-primary-800 hover:text-white">Sign

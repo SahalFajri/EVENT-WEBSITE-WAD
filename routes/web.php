@@ -1,10 +1,16 @@
 <?php
 
 use App\Http\Controllers\Admin\GalleryController;
-use App\Http\Controllers\TicketController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MerchandiseController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
+
+// login
+Route::get('/user/login', function () {
+    return view('user.login.index', ['title' => 'login']);
+})->name('user.login');
 
 Route::get('/', function () {
     return redirect()->route('home');
@@ -19,8 +25,11 @@ Route::get('/admin', function () {
     return view('admin.dashboard');
 })->name('dashboard');
 
+
+
 // Admin
 Route::resource('/admin/user', controller: UserController::class);
+Route::post('/user/login', [UserController::class, 'login'])->name('user.login');
 
 
 // Merchandise Admin

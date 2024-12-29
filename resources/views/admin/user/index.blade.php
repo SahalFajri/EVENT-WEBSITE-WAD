@@ -39,7 +39,12 @@
                             </td>
                             <td class="flex items-center px-6 py-4">
                                 <a href="{{ route('user.show', ['user' => $user->id]) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Remove</a>
+
+                                <form action="{{ route('user.destroy', ['user' => $user->id]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endif
