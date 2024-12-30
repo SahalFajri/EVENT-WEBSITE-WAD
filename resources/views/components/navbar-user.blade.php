@@ -10,36 +10,36 @@
           id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
           <span class="sr-only">Open user menu</span>
           <img class="w-8 h-8 rounded-full"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s"
-            alt="user photo">
+            src="{{ auth()->user()->profile_photo_url ?? asset('photo-profile/default.png') }}" alt="user photo">
         </button>
         <!-- Dropdown menu -->
         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow"
           id="user-dropdown">
           <div class="px-4 py-3">
-            <span class="block text-sm text-gray-900">Bonnie Green</span>
-            <span class="block text-sm  text-gray-500 truncate">name@flowbite.com</span>
+            <span class="block text-sm text-gray-900">{{ auth()->user()->name }}</span>
+            <span class="block text-sm  text-gray-500 truncate">{{ auth()->user()->email }}</span>
           </div>
           <ul class="py-2" aria-labelledby="user-menu-button">
             <li>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+              <a href="{{ route('dashboard.index') }}"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
             </li>
             <li>
               <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
             </li>
             <li>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Earnings</a>
-            </li>
-            <li>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign
-                out</a>
+              <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="block w-full px-4 py-2 text-sm text-left text-red-700 hover:bg-red-100">Sign
+                  out</button>
+              </form>
             </li>
           </ul>
         </div>
       @else
-        <a href="{{ route('user.login') }}"
+        <a href="{{ route('login') }}"
           class="text-sm text-white bg-primary-800 border-2 border-primary-800 rounded px-4 py-2 focus:ring-4 focus:ring-primary-300 hover:bg-accent-400 hover:border-accent-400">Login</a>
-        <a href="#"
+        <a href="{{ route('sign-up') }}"
           class="text-sm text-primary-800 bg-transparent border-2 border-primary-800 rounded px-4 py-2 focus:ring-4 focus:ring-primary-300 hover:bg-primary-800 hover:text-white">Sign
           up</a>
       @endauth
@@ -69,7 +69,7 @@
           <x-navigation-user href="{{ route('user.article.index') }}" :active="Request::is('article')">Article</x-navigation-user>
         </li>
         <li>
-          <x-navigation-user href="#" :active="Request::is('gallery')">Gallery</x-navigation-user>
+          <x-navigation-user href="{{ route('user.gallery.index') }}" :active="Request::is('gallery')">Gallery</x-navigation-user>
         </li>
       </ul>
     </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Merchandise;
@@ -11,7 +11,7 @@ class MerchandiseController extends Controller
     public function index()
     {
         $merchandise = Merchandise::all();
-        return view('admin.merchandise.index', compact('merchandise'));
+        return view('dashboard.merchandise.index', compact('merchandise'));
     }
     public function store(Request $request)
     {
@@ -33,12 +33,12 @@ class MerchandiseController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('admin.merchandise.index')->with('success', 'Merchandise created successfully!');
+        return redirect()->route('dashboard.merchandise.index')->with('success', 'Merchandise created successfully!');
     }
 
     public function edit(Merchandise $merchandise)
     {
-        return view('admin.merchandise.edit', compact('merchandise'));
+        return view('dashboard.merchandise.edit', compact('merchandise'));
     }
 
     public function update(Request $request, Merchandise $merchandise)
@@ -57,12 +57,12 @@ class MerchandiseController extends Controller
 
         $merchandise->update($request->only('name', 'stock', 'price', 'description'));
 
-        return redirect()->route('admin.merchandise.index')->with('success', 'Merchandise updated successfully!');
+        return redirect()->route('dashboard.merchandise.index')->with('success', 'Merchandise updated successfully!');
     }
 
     public function destroy(Merchandise $merchandise)
     {
         $merchandise->delete();
-        return redirect()->route('admin.merchandise.index')->with('success', 'Merchandise deleted successfully!');
+        return redirect()->route('dashboard.merchandise.index')->with('success', 'Merchandise deleted successfully!');
     }
 }

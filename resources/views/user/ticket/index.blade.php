@@ -13,26 +13,25 @@
         class="flex justify-between overflow-hidden bg-white border border-secondary-500 rounded-lg shadow flex-row w-full md:w-[36%] transition-all duration-300 hover:shadow-xl hover:scale-105">
         <div class="flex flex-col justify-center w-1/3 leading-normal">
           <div class="text-center h-1/2 m-1">
-            <h5 class="bg-clip-text text-transparent bg-main text-3xl font-bold tracking-tight">21</h5>
-            <h5 class="bg-clip-text text-transparent bg-main text-2xl font-bold tracking-tight">Jan</h5>
+            <h5 class="bg-clip-text text-transparent bg-alt text-3xl font-bold tracking-tight">21</h5>
+            <h5 class="bg-clip-text text-transparent bg-alt text-2xl font-bold tracking-tight">Jan</h5>
           </div>
-          <div class="bg-main h-1/2 p-2">
+          <div class="bg-alt h-1/2 p-2">
             <p class="font-semibold text-white">Earlybird</p>
             <p class="font-light text-white">Rp100.000</p>
           </div>
         </div>
         <img class="object-cover w-full rounded-e-lg h-36"
-          src="https://www.kemenparekraf.go.id/_next/image?url=https%3A%2F%2Fapi2.kemenparekraf.go.id%2Fstorage%2Fapp%2Fuploads%2Fpublic%2F620%2Fb45%2F897%2F620b4589734f6173657404.jpg&w=3840&q=75"
-          alt="">
+          src="https://liztomania.id/wp-content/uploads/2023/03/1banner-liztomania-2.jpeg" alt="">
       </a>
       <a href="{{ route('user.ticket.show') }}"
         class="flex justify-between overflow-hidden bg-white border border-secondary-500 rounded-lg shadow flex-row w-full md:w-[36%] transition-all duration-300 hover:shadow-xl hover:scale-105">
         <div class="flex flex-col justify-center w-1/3 leading-normal">
           <div class="text-center h-1/2 m-1">
-            <h5 class="bg-clip-text text-transparent bg-main text-3xl font-bold tracking-tight">21</h5>
-            <h5 class="bg-clip-text text-transparent bg-main text-2xl font-bold tracking-tight">Jan</h5>
+            <h5 class="bg-clip-text text-transparent bg-alt text-3xl font-bold tracking-tight">21</h5>
+            <h5 class="bg-clip-text text-transparent bg-alt text-2xl font-bold tracking-tight">Jan</h5>
           </div>
-          <div class="bg-main h-1/2 p-2">
+          <div class="bg-alt h-1/2 p-2">
             <p class="font-semibold text-white">Earlybird</p>
             <p class="font-light text-white">Rp100.000</p>
           </div>
@@ -45,10 +44,10 @@
         class="flex justify-between overflow-hidden bg-white border border-secondary-500 rounded-lg shadow flex-row w-full md:w-[36%] transition-all duration-300 hover:shadow-xl hover:scale-105">
         <div class="flex flex-col justify-center w-1/3 leading-normal">
           <div class="text-center h-1/2 m-1">
-            <h5 class="bg-clip-text text-transparent bg-main text-3xl font-bold tracking-tight">21</h5>
-            <h5 class="bg-clip-text text-transparent bg-main text-2xl font-bold tracking-tight">Jan</h5>
+            <h5 class="bg-clip-text text-transparent bg-alt text-3xl font-bold tracking-tight">21</h5>
+            <h5 class="bg-clip-text text-transparent bg-alt text-2xl font-bold tracking-tight">Jan</h5>
           </div>
-          <div class="bg-main h-1/2 p-2">
+          <div class="bg-alt h-1/2 p-2">
             <p class="font-semibold text-white">Earlybird</p>
             <p class="font-light text-white">Rp100.000</p>
           </div>

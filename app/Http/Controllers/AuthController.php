@@ -2,73 +2,78 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+
+class AuthController extends Controller
 {
-    //
-
-    public function index()
+    public function loginPage()
     {
-        //
-        $users = User::all();
-        return view('admin.user.index', ['users' => $users]);
-        // return response()->json($users);
+        return view('login.index', ['title' => 'Login']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function login(Request $request)
     {
-        //
-        return view('admin.user.create');
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('dashboard.index');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function logout(Request $request)
     {
-        //
-        // dd($request);
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
+    public function signUpPage()
+    {
+        return view('sign-up.index', ['title' => 'Sign Up']);
+    }
+
+    public function signUp(Request $request)
+    {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required',
             'phone' => 'nullable|string|max:50',
-            'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
-
-        if ($request->hasFile('profile_picture')) {
-            $validated['profile_picture'] = $request->file('profile_picture')->store('profile_pictures', 'public');
-        }
 
         $validated['password'] = Hash::make($validated['password']);
 
-        $validated['role'] = 'admin';
+        $validated['role'] = 'user';
+
         User::create($validated);
 
-        return redirect('/admin/user');
+        return redirect()->route('login')->with('success', 'User created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
-        $data = User::find($id);
-        return view('admin.user.update', );
-
+        return view('dashboard.user.update', ['user' => $user]);
     }
 
     /**
@@ -78,23 +83,22 @@ class AdminController extends Controller
     {
         //
         return view('users.edit', compact('user'));
-
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id, User $user)
+    public function update(Request $request, User $user)
     {
-        //
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required',
             'phone' => 'nullable|string|max:50',
             'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-            'role' => 'required|in:superadmin,admin,user',
         ]);
+        $validated['role'] = 'admin';
 
         if ($request->hasFile('profile_picture')) {
             if ($user->profile_picture) {
@@ -111,21 +115,20 @@ class AdminController extends Controller
 
         $user->update($validated);
 
-        return response()->json($user);
+        return redirect('/admin/user');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, User $user)
+    public function destroy(User $user)
     {
-        //
         if ($user->profile_picture) {
             Storage::disk('public')->delete($user->profile_picture);
         }
 
         $user->delete();
 
-        return response()->json(['message' => 'User deleted successfully.']);
+        return redirect('/');
     }
 }
