@@ -9,7 +9,7 @@
             {{-- Title --}}
             <div class="mb-5">
                 <label for="title" class="block mb-2 text-sm font-bold text-gray-700">Article Title</label>
-                <input type="text" id="title" name="title" value="{{ old('title', $article->name) }}" required autofocus                    
+                <input type="text" id="title" name="title" value="{{ old('title', $article->title) }}" required autofocus                    
                     class="w-full px-4 py-2 text-sm text-gray-800 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter article title" required>
                 @error('title')
@@ -26,7 +26,12 @@
                 @error('image')
                     <span class="text-sm text-red-600">{{ $message }}</span>
                 @enderror
+                <div class="mt-3">
+                    <img src="{{ asset('storage/'.$article->image) }}" alt="{{ $article->title }}" class="w-[250px]">
+                </div>
             </div>
+
+
 
             {{-- Content --}}
             <div class="mb-5">
@@ -34,7 +39,7 @@
                 <div class="w-full p-4 bg-gray-50 border border-gray-300 rounded-lg">
                     <textarea id="editor" name="content" rows="8"
                         class="w-full px-2 py-2 text-sm text-gray-800 bg-transparent border-0 focus:ring-0 focus:outline-none"
-                        placeholder="Write an article..." required>{{ old('content') }}</textarea>
+                        placeholder="Write an article..." required>{{ old('content', $article->content) }}</textarea>
                 </div>
                 @error('content')
                     <span class="text-sm text-red-600">{{ $message }}</span>
