@@ -75,8 +75,7 @@ class ArticleController extends Controller
             if($article->image){
                 Storage::disk('public')->delete($article->image);
             }
-            $imagePath = $request->file('image')->store('article', 'public');
-            $article->image = $imagePath;
+            $validatedData['image'] = $request->file('image')->store('article', 'public');
         }
 
         $article->update($validatedData);

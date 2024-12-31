@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\ArticleController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Models\Article;
+use App\Models\Gallery;
 use Illuminate\Support\Facades\Route;
 
 
@@ -46,7 +47,9 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::resource('article', ArticleController::class);
 
     // Gallery Admin
-    Route::get('gallery', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::get('gallery/download', [GalleryController::class, 'download_pdf'])->name('gallery.download_pdf');
+    Route::resource('gallery', GalleryController::class);
+    
 });
 
 
@@ -66,5 +69,6 @@ Route::get('/ticket/show', [TicketController::class, 'show'])->name('user.ticket
 
 // Gallery Users
 Route::get('/gallery', function () {
-    return view('user.gallery.index', ['title' => 'Gallery']);
+    $galleries = Gallery::latest()->get();
+    return view('user.gallery.index', ['title' => 'Gallery', 'galleries' => $galleries]);
 })->name('user.gallery.index');
