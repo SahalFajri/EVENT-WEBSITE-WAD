@@ -1,13 +1,13 @@
 <x-layout-admin>
 
-  <h1 class="text-2xl font-bold text-gray-800 mb-6">Data Gallery</h1>
+  <h1 class="text-2xl font-bold text-gray-800 mb-6">Data Ticket</h1>
 
   <div class="flex justify-start gap-2 items-center">
-    <a href="{{ route('dashboard.gallery.create') }}"
+    <a href="{{ route('dashboard.ticket.create') }}"
       class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah
-      Gallery
+      Ticket
     </a>
-    <a href="{{ route('dashboard.gallery.download_pdf') }}" target="_blank"
+    <a href="{{ route('dashboard.ticket.download_pdf') }}" target="_blank"
       class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Download
       PDF
     </a>
@@ -53,16 +53,23 @@
       </button>
     </div>
   @endif
+
   <!-- table -->
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4">
     <table class="w-full text-sm text-left text-gray-500 mt-4">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
           <th scope="col" class="px-6 py-3">
-            image
+            Name
           </th>
           <th scope="col" class="px-6 py-3">
-            image alt
+            Stock
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Price
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Available
           </th>
           <th scope="col" class="px-6 py-3">
             Action
@@ -70,20 +77,30 @@
         </tr>
       </thead>
       <tbody>
-        @forelse ($galleries as $gallery)
+        @forelse ($tickets as $ticket)
           <tr class="bg-white border-b hover:bg-gray-50">
-            <td class="px-6 py-4">
-              <img src="{{ asset('storage/' . $gallery->image) }}" alt="Image" class="w-20 h-20 object-cover">
-            </td>
             <td class="px-6 py-4 font-semibold text-gray-900">
-              {{ $gallery->image_alt }}
+              {{ $ticket->name }}
+            </td>
+            <td class="px-6 py-4">
+              {{ $ticket->stock }}
+            </td>
+            <td class="px-6 py-4">
+              Rp{{ number_format($ticket->price, 0, ',', '.') }}
+            </td>
+            <td class="px-6 py-4">
+              @if ($ticket->is_available)
+                Yes
+              @else
+                No
+              @endif
             </td>
             <td class="px-6 py-4">
               <div class="flex items-center space-x-4">
-                <a href="{{ route('dashboard.gallery.edit', $gallery->id) }}"
+                <a href="{{ route('dashboard.ticket.edit', $ticket->id) }}"
                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
 
-                <form action="{{ route('dashboard.gallery.destroy', $gallery->id) }}" method="post"
+                <form action="{{ route('dashboard.ticket.destroy', $ticket->id) }}" method="post"
                   onsubmit="confirmDelete(event, this)">
                   @csrf
                   @method('DELETE')
@@ -96,7 +113,7 @@
 
         @empty
           <tr>
-            <td colspan="3" class="text-center py-4">No gallery available</td>
+            <td colspan="5" class="text-center py-4">No ticket available</td>
           </tr>
         @endforelse
       </tbody>
@@ -152,7 +169,7 @@
       const rows = document.querySelectorAll('table tbody tr'); // Select all rows in the table
 
       rows.forEach(function(row) {
-        const productName = row.querySelector('td:nth-child(2)').textContent
+        const productName = row.querySelector('td:nth-child(1)').textContent
           .toLowerCase(); // Assuming name is in the first column
 
         // Show or hide rows based on the search term

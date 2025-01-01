@@ -14,27 +14,27 @@
       <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
         <!-- Item 1 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-          <img src="https://eventnusantara.com/wp-content/uploads/2022/08/25-Djakarta-Festival-1.jpg"
+          <img src="{{ asset('carousels/carousel-1.jpg') }}"
             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 2 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-          <img src="https://eventnusantara.com/wp-content/uploads/2022/08/25-Djakarta-Festival-1.jpg"
+          <img src="{{ asset('carousels/carousel-2.jpg') }}"
             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 3 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-          <img src="https://eventnusantara.com/wp-content/uploads/2022/08/25-Djakarta-Festival-1.jpg"
+          <img src="{{ asset('carousels/carousel-3.jpg') }}"
             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 4 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-          <img src="https://eventnusantara.com/wp-content/uploads/2022/08/25-Djakarta-Festival-1.jpg"
+          <img src="{{ asset('carousels/carousel-4.jpg') }}"
             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 5 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-          <img src="https://eventnusantara.com/wp-content/uploads/2022/08/25-Djakarta-Festival-1.jpg"
+          <img src="{{ asset('carousels/carousel-5.jpg') }}"
             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
       </div>
@@ -85,60 +85,58 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Card Artikel -->
       @foreach ($articles as $article)
+        <article
+          class="bg-gray-50 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105">
+          <!-- Image -->
+          <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->judul }}"
+            class="w-full h-60 object-cover">
 
-      <article
-        class="bg-gray-50 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105">
-        <!-- Image -->
-        <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->judul }}"
-          class="w-full h-60 object-cover">
-
-        <!-- Content -->
-        <div class="p-5">
-          <!-- Date -->
-          <div class="flex items-center text-sm text-gray-400 mb-2">
-            <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <time datetime="7777-05-08">{{ $article->created_at->format('d M Y') }}</time>
-          </div>
-
-          <!-- Title -->
-          <h2 class="text-xl font-semibold text-gray-800 leading-tight mb-3">
-            {{ $article->judul }}
-          </h2>
-
-          <!-- Description -->
-          <p class="text-gray-600 line-clamp-3 mb-4">
-            {{ $article->content }}
-          </p>
-
-          <!-- CTA -->
-          <div class="flex justify-between items-center">
-            <a href="{{ route('user.article.show', $article->id) }}"
-              class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium rounded-md hover:bg-gradient-to-r hover:from-blue-700 hover:to-indigo-700 transition-all duration-300">
-              Read More
-            </a>
-            <div class="text-sm text-gray-400 flex items-center">
-              <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Content -->
+          <div class="p-5">
+            <!-- Date -->
+            <div class="flex items-center text-sm text-gray-400 mb-2">
+              <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              12 views
+              <time datetime="7777-05-08">{{ $article->created_at->format('d M Y') }}</time>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-xl font-semibold text-gray-800 leading-tight mb-3">
+              {{ $article->judul }}
+            </h2>
+
+            <!-- Description -->
+            <p class="text-gray-600 line-clamp-3 mb-4">
+              {{ $article->content }}
+            </p>
+
+            <!-- CTA -->
+            <div class="flex justify-between items-center">
+              <a href="{{ route('user.article.show', $article->id) }}"
+                class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium rounded-md hover:bg-gradient-to-r hover:from-blue-700 hover:to-indigo-700 transition-all duration-300">
+                Read More
+              </a>
+              <div class="text-sm text-gray-400 flex items-center">
+                <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                12 views
+              </div>
             </div>
           </div>
-        </div>
-      </article>
-
-      @endforeach 
-    </div> 
+        </article>
+      @endforeach
+    </div>
     <!-- Pagination -->
     <div class="mt-4">
       {{ $articles->links() }}
     </div>
-  
+
 
   </div>
 </x-layout-user>

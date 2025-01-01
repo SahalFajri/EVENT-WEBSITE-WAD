@@ -38,8 +38,8 @@
 
 <body>
   <div style="text-align: center; margin-bottom: 20px;">
-    <h1 style="font-size: 24px; margin: 0;">MelodyMania Galleries</h1>
-    <p style="font-size: 16px; color:#777">List of all galleries</p>
+    <h1 style="font-size: 24px; margin: 0;">MelodyMania Tickets</h1>
+    <p style="font-size: 16px; color:#777">List of all tickets</p>
 
   </div>
 
@@ -47,27 +47,27 @@
     <thead>
       <tr>
         <th>No</th>
-        <th>Image</th>
-        <th>Image Alt</th>
-        <th>Created At</th>
+        <th>Name</th>
+        <th>Stock</th>
+        <th>Price</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($galleries as $gallery)
+      @foreach ($tickets as $ticket)
         <tr>
           <th>{{ $loop->iteration }}</th>
-          <td>
-            <img src="data:image/png;base64,<?php echo base64_encode(file_get_contents(base_path('public/storage/' . $gallery->image))); ?>" width="120">
-          </td>
-          <td>{{ $gallery->image_alt }}</td>
-          <td>{{ $gallery->created_at->format('d M Y H:i') }}</td>
+          <td>{{ $ticket->name }}</td>
+          <td>{{ $ticket->stock }}</td>
+          <td>{{ $ticket->price }}</td>
+          <td>{{ $ticket->description }}</td>
         </tr>
       @endforeach
     </tbody>
   </table>
 
   <footer style="text-align: center; margin-top: 30px;">
-    <p>© MelodyMania Galleries</p>
+    <p>© MelodyMania Tickets</p>
   </footer>
 </body>
 

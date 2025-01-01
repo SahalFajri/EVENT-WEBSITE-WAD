@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MelodyMania Gallery</title>
+  <title>MelodyMania Admin</title>
   <style>
     table {
       width: 100%;
@@ -38,8 +38,8 @@
 
 <body>
   <div style="text-align: center; margin-bottom: 20px;">
-    <h1 style="font-size: 24px; margin: 0;">MelodyMania Galleries</h1>
-    <p style="font-size: 16px; color:#777">List of all galleries</p>
+    <h1 style="font-size: 24px; margin: 0;">MelodyMania Admins</h1>
+    <p style="font-size: 16px; color:#777">List of all Admins</p>
 
   </div>
 
@@ -47,27 +47,27 @@
     <thead>
       <tr>
         <th>No</th>
-        <th>Image</th>
-        <th>Image Alt</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
         <th>Created At</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($galleries as $gallery)
+      @foreach ($users as $user)
         <tr>
           <th>{{ $loop->iteration }}</th>
-          <td>
-            <img src="data:image/png;base64,<?php echo base64_encode(file_get_contents(base_path('public/storage/' . $gallery->image))); ?>" width="120">
-          </td>
-          <td>{{ $gallery->image_alt }}</td>
-          <td>{{ $gallery->created_at->format('d M Y H:i') }}</td>
+          <td>{{ $user->name }}</td>
+          <td>{{ $user->email }}</td>
+          <td>{{ $user->phone }}</td>
+          <td>{{ $user->created_at->format('d M Y H:i') }}</td>
         </tr>
       @endforeach
     </tbody>
   </table>
 
   <footer style="text-align: center; margin-top: 30px;">
-    <p>© MelodyMania Galleries</p>
+    <p>© MelodyMania Admin</p>
   </footer>
 </body>
 

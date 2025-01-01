@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->double('price');
             $table->text('description');
+            $table->boolean('is_available')->default(false);
             $table->timestamps();
         });
     }

@@ -12,7 +12,8 @@ class Ticket extends Model
         'name',
         'stock',
         'price',
-        'description'
+        'description',
+        'is_available',
     ];
 
     public function orderDetails(): MorphMany

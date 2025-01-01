@@ -4,10 +4,12 @@ use App\Http\Controllers\Dashboard\GalleryController;
 use App\Http\Controllers\Dashboard\MerchandiseController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\ArticleController;
-use App\Http\Controllers\TicketController;
+use App\Http\Controllers\Dashboard\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Models\Article;
 use App\Models\Gallery;
+use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,38 +36,57 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
     // Dashboard
     Route::get('', function () {
-        return view('dashboard.dashboard');
+        $users = User::latest()->limit(3)->get();
+        $articles = Article::latest()->limit(3)->get();
+        $total_user = User::count();
+        $total_article = Article::count();
+        return view('dashboard.dashboard', compact('users', 'articles', 'total_user', 'total_article'));
     })->name('index');
 
     // User Admin
+    Route::get('admin/download', [AdminController::class, 'download_pdf'])->name('admin.download_pdf');
     Route::resource('admin', AdminController::class);
 
     // Merchandise Admin
     Route::resource('merchandise', MerchandiseController::class);
 
+    // Ticket Admin
+    Route::get('ticket/download', [TicketController::class, 'download_pdf'])->name('ticket.download_pdf');
+    Route::resource('ticket', TicketController::class);
+
     // Article Admin
+    Route::get('article/download', [ArticleController::class, 'export_excel'])->name('article.export_excel');
     Route::resource('article', ArticleController::class);
 
     // Gallery Admin
     Route::get('gallery/download', [GalleryController::class, 'download_pdf'])->name('gallery.download_pdf');
     Route::resource('gallery', GalleryController::class);
-    
 });
 
 
 // Article Users
 Route::get('/article', function () {
     $articles = Article::latest()->paginate(6);
-    return view('user.article.index', ['title' => 'Article', 'articles' => $articles ]);
+    return view('user.article.index', ['title' => 'Article', 'articles' => $articles]);
 })->name('user.article.index');
 
 Route::get('/article/show/{article}', function (Article $article) {
-    return view('user.article.show', ['title' => 'Article', 'article' => $article]);
+    return view('user.article.show', ['title' => 'Detail Article', 'article' => $article]);
 })->name('user.article.show');
 
 // Ticket Users
-Route::get('/ticket', [TicketController::class, 'index'])->name('user.ticket.index');
-Route::get('/ticket/show', [TicketController::class, 'show'])->name('user.ticket.show');
+Route::get('/ticket', function () {
+    $tickets = Ticket::all();
+    return view('user.ticket.index', ['title' => 'Ticket', 'tickets' => $tickets]);
+})->name('user.ticket.index');
+
+Route::get('/ticket/show/{ticket}', function (Ticket $ticket) {
+    if (!$ticket->is_available) {
+        return redirect()->route('user.ticket.index');
+    }
+    $tickets = Ticket::all();
+    return view('user.ticket.show', ['title' => 'Detail Ticket', 'ticket' => $ticket, 'tickets' => $tickets]);
+})->name('user.ticket.show');
 
 // Gallery Users
 Route::get('/gallery', function () {

@@ -17,7 +17,7 @@
         </a>
       </li>
       <li>
-        <a href="#"
+        <a href="{{ route('dashboard.ticket.index') }}"
           class="flex items-center p-2 {{ Request::is('dashboard/ticket*') ? 'active text-white bg-gray-800' : 'text-gray-900 hover:bg-gray-100' }} rounded-lg group">
           <svg
             class="flex-shrink-0 w-5 h-5 {{ Request::is('dashboard/ticket*') ? 'text-white' : 'text-gray-500 group-hover:text-gray-900' }} transition duration-75"

@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
@@ -113,6 +113,13 @@ class AdminController extends Controller
 
         $Admin->delete();
 
-        return response()->json(['message' => 'User deleted successfully.']);
+        return redirect()->route('dashboard.admin.index')->with('success', 'Admin deleted successfully!');
+    }
+
+    public function download_pdf()
+    {
+        $users = User::where('role', 'admin')->latest()->get();
+        $pdf = Pdf::loadView('dashboard.admin.pdf', compact('users'));
+        return $pdf->stream('admin.pdf');
     }
 }

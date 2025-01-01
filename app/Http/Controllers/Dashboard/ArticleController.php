@@ -7,6 +7,8 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ArticleExport;
 
 class ArticleController extends Controller
 {
@@ -23,10 +25,10 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        
+
         return view('dashboard.article.create');
     }
-     /**
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -71,8 +73,8 @@ class ArticleController extends Controller
             'content' => 'required|string',
         ]);
 
-        if ($request->hasFile('image')){
-            if($article->image){
+        if ($request->hasFile('image')) {
+            if ($article->image) {
                 Storage::disk('public')->delete($article->image);
             }
             $validatedData['image'] = $request->file('image')->store('article', 'public');
@@ -87,12 +89,17 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        if($article->image){
-                Storage::disk('public')->delete($article->image);
-            }
+        if ($article->image) {
+            Storage::disk('public')->delete($article->image);
+        }
 
-        $article ->delete();
+        $article->delete();
 
         return redirect()->route('dashboard.article.index')->with('success', 'Article Berhasil dihapus');
-    }    
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new ArticleExport, 'articles.xlsx');
+    }
 }
