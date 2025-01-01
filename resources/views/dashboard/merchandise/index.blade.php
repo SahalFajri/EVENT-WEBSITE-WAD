@@ -56,10 +56,11 @@
           <td class="px-6 py-4">{{ Str::limit($item->description, 50) }}</td>
           <td class="px-6 py-4">
             <!-- Action buttons -->
-            <form action="{{ route('dashboard.merchandise.destroy', $item->id) }}" method="POST" class="inline">
+            <form action="{{ route('dashboard.merchandise.destroy', $item->id) }}" method="POST" class="inline"
+            onsubmit="confirmDelete(event, this)">
               @csrf
               @method('DELETE')
-              <button type="button" onclick="confirmDelete()"
+              <button type="submit"
                 class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
             </form>
           </td>
@@ -192,14 +193,17 @@
   </div>
 
   <script>
+    let deleteForm;
     // Fungsi untuk menampilkan modal konfirmasi
-    function confirmDelete() {
-      document.getElementById('confirmModal').classList.remove('hidden');
-    }
+    function confirmDelete(event, form) {
+    event.preventDefault();
+    deleteForm = form;
+    document.getElementById('confirmModal').classList.remove('hidden');
+      }
 
-    // Fungsi untuk menghapus data setelah konfirmasi
+    // Fungsi untuk menghapus data ketika tombol Yes, Delete ditekan   
     document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-      document.querySelector('form').submit();
+    deleteForm.submit();
     });
 
     // Fungsi untuk menutup modal tanpa menghapus
