@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Models\Article;
 use App\Models\Gallery;
+use App\Models\Merchandise;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -96,5 +97,9 @@ Route::get('/gallery', function () {
 
 // Merchandise Users
 Route::get('/merchandise', function () {
-    return view('user.merchandise.index');
+    $merchandise = Merchandise::latest()->get();
+    return view('user.merchandise.index', [
+        'title' => 'Merchandise',
+        'merchandise' => $merchandise 
+    ]);
 })->name('user.merchandise.index');
