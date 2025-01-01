@@ -93,3 +93,8 @@ Route::get('/gallery', function () {
     $galleries = Gallery::latest()->get();
     return view('user.gallery.index', ['title' => 'Gallery', 'galleries' => $galleries]);
 })->name('user.gallery.index');
+
+// Merchandise Users
+Route::get('/merchandise', function () {
+    return view('user.merchandise.index');
+})->name('user.merchandise.index');
