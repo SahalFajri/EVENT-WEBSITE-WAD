@@ -1,5 +1,5 @@
 <x-layout-admin>
-
+<h1 class="text-2xl font-bold text-gray-800 mb-6">Data Merchandise</h1>
   <!-- Button to Open Modal -->
   <button id="openModalButton"
     class="text-white bg-gradient-to-br from-purple-600 to-blue-500 
@@ -55,6 +55,9 @@
           <td class="px-6 py-4">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
           <td class="px-6 py-4">{{ Str::limit($item->description, 50) }}</td>
           <td class="px-6 py-4">
+            <!-- Edit Button -->
+            <button type="button" onclick="openEditModal({{ $item }})"
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
             <!-- Action buttons -->
             <form action="{{ route('dashboard.merchandise.destroy', $item->id) }}" method="POST" class="inline"
             onsubmit="confirmDelete(event, this)">
@@ -145,6 +148,70 @@
   </div>
   </div>
 
+<!-- Modal Update -->
+<div id="updateModal" class="fixed inset-0 z-50 hidden bg-gray-500 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-8 rounded-lg w-1/3">
+        <h2 class="text-2xl font-semibold mb-4">Update Merchandise</h2>
+
+        <!-- Form -->
+        <form id="updateForm" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <!-- Merchandise Name -->
+            <div class="mb-4">
+                <label for="updateName" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" id="updateName" name="name"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    required>
+            </div>
+
+            <!-- Merchandise Stock -->
+            <div class="mb-4">
+                <label for="updateStock" class="block text-sm font-medium text-gray-700">Stock</label>
+                <input type="number" id="updateStock" name="stock"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    required>
+            </div>
+
+            <!-- Merchandise Price -->
+            <div class="mb-4">
+                <label for="updatePrice" class="block text-sm font-medium text-gray-700">Price</label>
+                <input type="number" id="updatePrice" name="price"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    required>
+            </div>
+
+            <!-- Merchandise Image -->
+            <div class="mb-4">
+                <label for="updateImage" class="block text-sm font-medium text-gray-700">Image</label>
+                <input type="file" id="updateImage" name="image"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- Merchandise Description -->
+            <div class="mb-4">
+                <label for="updateDescription" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="updateDescription" name="description" rows="4"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    required></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-between">
+                <button type="submit"
+                    class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    Update Merchandise
+                </button>
+                <button type="button" id="closeUpdateModalButton"
+                    class="text-gray-700 bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
   <!-- Modal Scripts -->
   <script>
     // Get modal element
@@ -230,7 +297,32 @@
         }
       });
     });
+
+    // Open update modal and populate fields
+function openEditModal(item) {
+    const updateModal = document.getElementById('updateModal');
+    const updateForm = document.getElementById('updateForm');
+
+    // Populate fields
+    document.getElementById('updateName').value = item.name;
+    document.getElementById('updateStock').value = item.stock;
+    document.getElementById('updatePrice').value = item.price;
+    document.getElementById('updateDescription').value = item.description;
+
+    // Update form action URL
+    updateForm.action = `/dashboard/merchandise/${item.id}`;
+
+    // Show modal
+    updateModal.classList.remove('hidden');
+}
+
+// Close update modal
+document.getElementById('closeUpdateModalButton').addEventListener('click', () => {
+    document.getElementById('updateModal').classList.add('hidden');
+});
+
   </script>
+
 
   </body>
 

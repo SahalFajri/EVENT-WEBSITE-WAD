@@ -36,11 +36,6 @@ class MerchandiseController extends Controller
         return redirect()->route('dashboard.merchandise.index')->with('success', 'Merchandise created successfully!');
     }
 
-    public function edit(Merchandise $merchandise)
-    {
-        return view('dashboard.merchandise.edit', compact('merchandise'));
-    }
-
     public function update(Request $request, Merchandise $merchandise)
     {
         $request->validate([
@@ -49,16 +44,16 @@ class MerchandiseController extends Controller
             'price' => 'required|numeric',
             'description' => 'required',
         ]);
-
+    
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('merchandise', 'public');
             $merchandise->image = $imagePath;
         }
-
+    
         $merchandise->update($request->only('name', 'stock', 'price', 'description'));
-
+    
         return redirect()->route('dashboard.merchandise.index')->with('success', 'Merchandise updated successfully!');
-    }
+    }    
 
     public function destroy(Merchandise $merchandise)
     {

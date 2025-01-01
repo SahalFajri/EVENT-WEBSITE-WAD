@@ -1,5 +1,12 @@
 <x-layout-user>
 <x-slot:title>{{ $title }}</x-slot:title>
+
+  <!-- Header Artikel -->
+<div class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">Merchandise</h1>
+    <p class="text-lg text-black">Beli merchandise yang super keren ini!
+    </p>
+</div>
 <!-- Page start -->
 <div class="section padding-top-big">
     <div class="container">
