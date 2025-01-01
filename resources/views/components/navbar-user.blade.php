@@ -63,7 +63,7 @@
           <x-navigation-user href="{{ route('user.ticket.index') }}" :active="Request::is('ticket*')">Ticket</x-navigation-user>
         </li>
         <li>
-          <x-navigation-user href="{{ route('user.merchandise.index') }}'" :active="Request::is('merchandise')">Merchandise</x-navigation-user>
+          <x-navigation-user href="{{ route('user.merchandise.index') }}" :active="Request::is('merchandise')">Merchandise</x-navigation-user>
         </li>
         <li>
           <x-navigation-user href="{{ route('user.article.index') }}" :active="Request::is('article')">Article</x-navigation-user>
