@@ -19,7 +19,7 @@
         <p class="text-gray-600 mb-4">{{$article->content}}</p>
 
         <a href="/article"
-          class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium rounded-md hover:bg-gradient-to-r hover:from-blue-700 hover:to-indigo-700 transition-all duration-300">
+          class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-primary-600 to-secondary-100 text-white text-sm font-medium rounded-md hover:bg-gradient-to-r hover:from-blue-700 hover:to-indigo-700 transition-all duration-300">
           Back
         </a>
       </div>

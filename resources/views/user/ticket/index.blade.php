@@ -2,7 +2,7 @@
   <x-slot:title>{{ $title }}</x-slot:title>
   <div>
     <div class="justify-center flex flex-col items-center">
-      <img src="https://pestapora.com/_nuxt/tiket-pestapora-2025.CPKrUcjQ.png" class="w-2/3" alt="">
+      <img src="{{ asset('') }}" class="w-2/3" alt="">
     </div>
 
     <div class="flex flex-wrap justify-center gap-4 mt-8">
