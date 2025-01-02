@@ -2,83 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\OrderTicket;
+use App\Models\Ticket;
+use App\Services\MidtransService;
 use Illuminate\Http\Request;
-use Midtrans\Config;
-use Midtrans\Snap;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    public function __construct()
+    public function storeOrderTicket(Ticket $ticket, Request $request)
     {
-        // Konfigurasi Midtrans
-        Config::$serverKey = config('services.midtrans.serverKey');
-        Config::$clientKey = config('services.midtrans.clientKey');
-        Config::$isProduction = config('services.midtrans.isProduction');
-        Config::$isSanitized = config('services.midtrans.isSanitized');
-        Config::$is3ds = config('services.midtrans.is3ds');
-    }
+        $user = Auth::user();
 
-    public function processPayment(Request $request)
-    {
-        // Validasi request input
-        $request->validate([
-            'order_id' => 'required|exists:orders,id',
+        $validatedData = $request->validate([
+            'quantity' => 'required|integer|min:1',
+            'notes' => 'nullable|string',
         ]);
 
-        // Mendapatkan data order dari database
-        $order = Order::with('user', 'details.item')->findOrFail($request->order_id);
-
-        // Persiapan parameter untuk Midtrans
-        $params = [
-            'transaction_details' => [
-                'order_id' => $order->id,
-                'gross_amount' => $order->gross_amount,
-            ],
-            'customer_details' => [
-                'first_name' => $order->user->name,
-                'email' => $order->user->email,
-                'phone' => $order->user->phone,
-            ],
-            'item_details' => $this->getItemDetails($order),
-        ];
-
-        try {
-            // Mendapatkan Snap Token dari Midtrans
-            $snapToken = Snap::getSnapToken($params);
-
-            // Menampilkan halaman checkout dengan Snap Token
-            return view('payment.checkout', [
-                'snapToken' => $snapToken,
-                'order' => $order
-            ]);
-        } catch (\Exception $e) {
-            // Penanganan jika gagal mendapatkan Snap Token
-            return back()->with('error', 'Gagal memproses pembayaran: ' . $e->getMessage());
+        if ($ticket->stock < $validatedData['quantity']) {
+            return back()->with('error', 'Stock ticket is not enough');
         }
+
+        $ticket->decrement('stock', $validatedData['quantity']);
+
+        $gross_amount = $validatedData['quantity'] * $ticket->price;
+
+        $newOrderData['id'] = 'ORDER-TICKET-' . time();
+        $newOrderData['user_id'] = $user->id;
+        $newOrderData['status'] = 'UNPAID';
+        $newOrderData['snap_token'] = '';
+        $newOrderData['gross_amount'] = $gross_amount;
+        $newOrderData['notes'] = $validatedData['notes'];
+
+        $order = OrderTicket::create($newOrderData);
+
+        $order->details()->create([
+            'ticket_id' => $ticket->id,
+            'quantity' => $validatedData['quantity'],
+            'price' => $ticket->price,
+        ]);
+
+        return redirect()->route('checkout.show', ['order' => $order]);
     }
 
     /**
-     * Mendapatkan detail item dari order.
-     *
-     * @param \App\Models\Order $order
-     * @return array
+     * @throws \Exception
      */
-    private function getItemDetails(Order $order): array
+    public function showCheckout(OrderTicket $order, MidtransService $midtransService)
     {
-        $itemDetails = [];
-
-        foreach ($order->details as $detail) {
-            $itemDetails[] = [
-                'id' => $detail->item_id,
-                'category' => class_basename($detail->item_type), // Ambil nama model: Ticket atau Merchandise
-                'price' => $detail->price,
-                'quantity' => $detail->quantity,
-                'name' => $detail->item->name ?? $detail->item->type, // Mengambil nama atau tipe berdasarkan relasi
-            ];
+        if ($order->status == 'PAID') {
+            return redirect()->route('dashboard.order.show', ['order' => $order]);
         }
 
-        return $itemDetails;
+        if ($order->snap_token == null) {
+            $snapToken = $midtransService->createSnapToken($order);
+        } else {
+            $snapToken = $order->snap_token;
+        }
+
+        $order->update([
+            'snap_token' => $snapToken,
+            'status' => 'PENDING',
+        ]);
+
+        $title = 'Checkout';
+
+        return view('checkout.show', compact('order', 'snapToken', 'title'));
     }
 
     /**
@@ -87,19 +76,62 @@ class PaymentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function handleNotification(Request $request)
+    public function midtransCallback(Request $request, MidtransService $midtransService)
     {
-        // Logika untuk menangani notifikasi pembayaran dari Midtrans
-        $notification = json_decode($request->getContent(), true);
+        if ($midtransService->isSignatureKeyVerified()) {
+            $order = $midtransService->getOrder();
 
-        // Cek status pembayaran dari Midtrans
-        if ($notification['transaction_status'] === 'settlement') {
-            $order = Order::find($notification['order_id']);
-            if ($order) {
-                $order->update(['status' => 'paid']);
+            if ($midtransService->getStatus() == 'success') {
+                $order->update([
+                    'status' => 'PAID',
+                ]);
             }
-        }
 
-        return response()->json(['message' => 'Notification processed'], 200);
+            if ($midtransService->getStatus() == 'pending') {
+                $order->update([
+                    'status' => 'PENDING',
+                ]);
+            }
+
+            if ($midtransService->getStatus() == 'expire') {
+                $order->update([
+                    'status' => 'EXPIRED',
+                ]);
+
+                $order->details->each(function ($detail) {
+                    $detail->ticket->increment('stock', $detail->quantity);
+                });
+            }
+
+            if ($midtransService->getStatus() == 'cancel') {
+                $order->update([
+                    'status' => 'CANCELED',
+                ]);
+
+                $order->details->each(function ($detail) {
+                    $detail->ticket->increment('stock', $detail->quantity);
+                });
+            }
+
+            if ($midtransService->getStatus() == 'failed') {
+                $order->update([
+                    'status' => 'FAILED',
+                ]);
+
+                $order->details->each(function ($detail) {
+                    $detail->ticket->increment('stock', $detail->quantity);
+                });
+            }
+
+            return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Notifikasi berhasil diproses',
+                ]);
+        } else {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], 401);
+        }
     }
 }

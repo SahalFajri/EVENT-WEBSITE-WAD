@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Order extends Model
+class OrderTicket extends Model
 {
+    protected $table = 'orders_tickets';
+
     protected $fillable = [
         'user_id',
         'status',
         'notes',
-        'redirect_url',
+        'snap_token',
         'gross_amount'
     ];
 
@@ -23,6 +25,6 @@ class Order extends Model
 
     public function details(): HasMany
     {
-        return $this->hasMany(OrderDetail::class);
+        return $this->hasMany(OrderTicketDetail::class);
     }
 }

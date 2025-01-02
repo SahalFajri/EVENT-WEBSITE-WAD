@@ -80,6 +80,19 @@
           <span class="flex-1 ms-3 whitespace-nowrap">Gallery</span>
         </a>
       </li>
+      <li>
+        <a href="{{ route('dashboard.order-ticket.index') }}"
+          class="flex items-center p-2 {{ Request::is('dashboard/order-ticket*') ? 'active text-white bg-gray-800' : 'text-gray-900 hover:bg-gray-100' }} rounded-lg group">
+          <svg
+            class="flex-shrink-0 w-5 h-5 {{ Request::is('dashboard/order-ticket*') ? 'text-white' : 'text-gray-500 group-hover:text-gray-900' }} transition duration-75"
+            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+            viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 8h6m-6 4h6m-6 4h6M6 3v18l2-2 2 2 2-2 2 2 2-2 2 2V3l-2 2-2-2-2 2-2-2-2 2-2-2Z" />
+          </svg>
+          <span class="flex-1 ms-3 whitespace-nowrap">Order Ticket</span>
+        </a>
+      </li>
     </ul>
   </div>
 </aside>

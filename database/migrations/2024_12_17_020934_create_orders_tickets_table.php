@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_details', function (Blueprint $table) {
+        Schema::create('orders_tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->morphs('item');
-            $table->integer('quantity');
-            $table->double('price');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('status');
+            $table->text('notes')->nullable();
+            $table->string('snap_token');
+            $table->decimal('gross_amount', 10, 2);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_details');
+        Schema::dropIfExists('orders_tickets');
     }
 };

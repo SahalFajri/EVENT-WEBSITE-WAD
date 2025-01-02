@@ -5,7 +5,9 @@ use App\Http\Controllers\Dashboard\MerchandiseController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\ArticleController;
 use App\Http\Controllers\Dashboard\TicketController;
+use App\Http\Controllers\Dashboard\OrderTicketController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
 use App\Models\Article;
 use App\Models\Gallery;
 use App\Models\Merchandise;
@@ -62,6 +64,11 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     // Gallery Admin
     Route::get('gallery/download', [GalleryController::class, 'download_pdf'])->name('gallery.download_pdf');
     Route::resource('gallery', GalleryController::class);
+
+    // Order Ticket Dashboard
+    Route::get('order-ticket/download', [OrderTicketController::class, 'download_pdf'])->name('order-ticket.download_pdf');
+    Route::get('order-ticket/download/{order_ticket}', [OrderTicketController::class, 'download_pdf_order'])->name('order-ticket.download_pdf_order');
+    Route::resource('order-ticket', OrderTicketController::class);
 });
 
 
@@ -100,6 +107,15 @@ Route::get('/merchandise', function () {
     $merchandise = Merchandise::latest()->get();
     return view('user.merchandise.index', [
         'title' => 'Merchandise',
-        'merchandise' => $merchandise 
+        'merchandise' => $merchandise
     ]);
 })->name('user.merchandise.index');
+
+
+// Order
+Route::post('/order/ticket/{ticket}', [PaymentController::class, 'storeOrderTicket'])->name('order.ticket.store');
+
+Route::get('/checkout/{order}', [PaymentController::class, 'showCheckout'])->name('checkout.show');
+
+// Callback Midtrans
+Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Ticket extends Model
 {
@@ -16,8 +16,8 @@ class Ticket extends Model
         'is_available',
     ];
 
-    public function orderDetails(): MorphMany
+    public function orderTicketDetails(): HasMany
     {
-        return $this->morphMany(OrderDetail::class, 'item');
+        return $this->hasMany(OrderTicketDetail::class);
     }
 }

@@ -15,7 +15,7 @@
           <p class="text-gray-700 mb-4">{{ $ticket->description }}</p>
           <p class="text-gray-700 mb-4">Stock Available: {{ $ticket->stock }}</p>
         </div>
-        <form action="#" method="POST" class="mt-4">
+        <form action="{{ route('order.ticket.store', $ticket->id) }}" method="POST" class="mt-4">
           @csrf
           <div class="flex items-center mb-4">
             <label for="quantity" class="block text-gray-700 font-medium mr-2">Quantity:</label>
@@ -23,6 +23,11 @@
               max="{{ $ticket->stock >= 10 ? 10 : $ticket->stock }}" value="1"
               class="w-20 p-2 border border-gray-300 rounded-lg">
           </div>
+          <div class="mb-4">
+            <label for="notes" class="block text-gray-700 font-medium">Notes:</label>
+            <textarea name="notes" id="notes" rows="3" class="w-full p-2 border border-gray-300 rounded-lg resize-none"></textarea>
+          </div>
+
           <button type="submit" class="w-full bg-alt text-white py-2 px-4 rounded-lg">Purchase</button>
         </form>
       </div>

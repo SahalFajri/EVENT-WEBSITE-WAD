@@ -50,9 +50,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function orders(): HasMany
+    public function ordersTickets(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(OrderTicket::class);
     }
     public function articles(): HasMany
     {
