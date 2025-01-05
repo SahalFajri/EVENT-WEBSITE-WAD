@@ -28,6 +28,13 @@ class Merchandise extends Model
         'image',
         'description',
     ];
+    
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_items')
+                    ->withPivot('quantity', 'price')
+                    ->withTimestamps();
+    }
 
     /**
      * The attributes that should be cast to native types.

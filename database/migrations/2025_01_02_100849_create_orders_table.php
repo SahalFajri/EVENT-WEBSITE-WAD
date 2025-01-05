@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('status');
-            $table->text('notes')->nullable();
-            $table->string('redirect_url');
-            $table->decimal('gross_amount', 10, 2);
+            $table->decimal('total', 10, 2);
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
+        
     }
 
     /**
